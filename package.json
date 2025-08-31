@@ -1,0 +1,63 @@
+{
+  "name": "@xuby/antd-form-builder",
+  "version": "0.1.0",
+  "description": "Form Builder para Ant Design v5 basado en JSON Schema + UI Schema",
+  "type": "module",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "sideEffects": false,
+  "scripts": {
+    "dev": "tsup src/index.tsx --watch --format esm,cjs --dts",
+    "prepare": "pnpm build",
+    "build": "tsup src/index.tsx --format esm,cjs --dts --sourcemap --clean",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "lint": "eslint . --ext ts,tsx,js,jsx",
+    "version-packages": "changeset version",
+    "release": "pnpm build && npm publish --access public"
+  },
+  "packageManager": "pnpm@10.15.0",
+  "peerDependencies": {
+    "antd": ">=5",
+    "react": ">=18",
+    "react-dom": ">=18"
+  },
+  "devDependencies": {
+    "@changesets/cli": "^2.29.6",
+    "@eslint/js": "^9.34.0",
+    "@types/react": "^19.1.12",
+    "@types/react-dom": "^19.1.9",
+    "antd": "^5.0.0",
+    "eslint": "^9.34.0",
+    "eslint-plugin-jsx-a11y": "^6.10.2",
+    "eslint-plugin-react": "^7.37.5",
+    "eslint-plugin-react-hooks": "^5.2.0",
+    "prettier": "^3.6.2",
+    "react": "^18.0.0",
+    "react-dom": "^18.0.0",
+    "tsup": "^8.5.0",
+    "typescript": "^5.9.2",
+    "typescript-eslint": "^8.41.0",
+    "vitest": "^3.2.4"
+  },
+  "license": "MIT",
+  "keywords": [
+    "ant-design",
+    "forms",
+    "json schema",
+    "react",
+    "builder"
+  ],
+  "author": "Xuby <diazxavier27@gmail.com>"
+}
