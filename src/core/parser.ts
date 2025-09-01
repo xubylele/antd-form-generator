@@ -1,17 +1,26 @@
-import { EnumSchema, FormSchema, FormSchemaProperty, UIFormSchema } from './types';
+import {
+  EnumSchema,
+  FormSchema,
+  FormSchemaProperty,
+  OptionsSchema,
+  UIFormSchema,
+} from '../types';
 
-export type ParsedFiled = {
+export type ParsedField = {
   name: string;
   label?: string;
-  type: "string" | "number" | "boolean" | "enum" | "array";
+  type: "string" | "number" | "boolean" | "enum" | "array" | "options";
   widget?: string;
   enumOptions?: { label: string, value: string }[];
   span?: number;
   placeholder?: string;
+  customClass?: string;
+  visibleIf?: Record<string, unknown>;
+  options?: { label: string, value: string }[];
 };
 
 export const parseFormSchema = (schema: FormSchema, uiSchema: UIFormSchema = {}) => {
-  const fields: ParsedFiled[] = [];
+  const fields: ParsedField[] = [];
 
   const layoutCols = uiSchema["ui:layout"]?.cols ?? 12;
   const layoutMap = uiSchema["ui:layout"]?.fields ?? {};
@@ -20,9 +29,10 @@ export const parseFormSchema = (schema: FormSchema, uiSchema: UIFormSchema = {})
   const placeholder = uiSchema['ui:placeholder'] || {};
   const visibleIf = uiSchema['ui:visibleIf'] || {};
   const dependencies = uiSchema['ui:dependencies'] || [];
+  const customClass = uiSchema['ui:customClass'] || {};
 
   for (const [name, property] of Object.entries(schema.properties)) {
-    const base: ParsedFiled = {
+    const base: ParsedField = {
       name,
       label: property.title,
       type: resolveType(property),
@@ -30,11 +40,12 @@ export const parseFormSchema = (schema: FormSchema, uiSchema: UIFormSchema = {})
       widget: widgets[name],
       placeholder: placeholder[name],
       enumOptions: resolveEnumOptions(property),
+      options: resolveOptions(property),
+      customClass: customClass[name],
     }
 
-    const visibleIf = uiSchema["ui:visibleIf"]?.[name];
-    if (visibleIf) {
-      // TODO: Implement visibleIf
+    if (visibleIf?.[name]) {
+      base.visibleIf = visibleIf?.[name];
     }
 
     const dependency = dependencies.find(d => d.show.includes(name));
@@ -52,8 +63,9 @@ const resolveType = (property: FormSchemaProperty) => {
   if (property.type === "string") return "string";
   if (property.type === "number") return "number";
   if (property.type === "boolean") return "boolean";
-  if ((property as EnumSchema).type === "string" || (property as EnumSchema).type === "number") return "enum";
   if (property.type === "array") return "array";
+  if ((property as EnumSchema).type === "string" || (property as EnumSchema).type === "number") return "enum";
+  if ((property as OptionsSchema).type === "options") return "options";
   return "string";
 };
 
@@ -65,6 +77,14 @@ const clampSpan = (span: number | undefined, cols: number) => {
 const resolveEnumOptions = (property: FormSchemaProperty) => {
   if ((property as EnumSchema).type === "string" || (property as EnumSchema).type === "number") {
     return (property as EnumSchema).enum?.map(value => ({ label: value.toString(), value: value.toString() }));
+  }
+
+  return [];
+};
+
+const resolveOptions = (property: FormSchemaProperty) => {
+  if ((property as OptionsSchema).type === "options") {
+    return (property as OptionsSchema).options;
   }
 
   return [];

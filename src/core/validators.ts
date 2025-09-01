@@ -6,13 +6,14 @@ import {
   FormSchemaProperty,
   NumberSchema,
   StringSchema,
-} from './types';
+} from '../types';
 
 export const buildRulesFormField = (
   name: string,
   shcema: FormSchema,
   prop: FormSchemaProperty,
 ) => {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const rules: any[] = [];
 
   if (shcema.required?.includes(name)) {
@@ -53,8 +54,6 @@ export const buildRulesFormField = (
 
     if (a.items) rules.push({ type: 'array', items: a.items.map(item => buildRulesFormField(name, shcema, item)), message: `${name} must be an array` });
   }
-
-  console.log('rules', rules);
 
   return rules;
 };

@@ -1,17 +1,16 @@
-import React from "react";
-import { Button, ButtonProps, Col, Form, Input, InputNumber, Row, Select, Switch } from "antd";
-import { FormSchema, UIFormSchema } from './core/types';
-import { parseFormSchema } from './core/parser';
+import {
+  Button,
+  Col,
+  Form,
+  Input,
+  InputNumber,
+  Row,
+  Select,
+  Switch
+} from "antd";
+import { ParsedField, parseFormSchema } from './core/parser';
 import { buildRulesFormField } from './core/validators';
-
-type AntdSchemaFormProps = {
-  schema: FormSchema;
-  uiSchema?: UIFormSchema;
-  initialValues?: Record<string, unknown>;
-  onFinish: (values: Record<string, unknown>) => void;
-  onChange?: (values: Record<string, unknown>) => void;
-  submitButtonProps?: ButtonProps;
-};
+import { AntdSchemaFormProps, FormSchema, UIFormSchema } from './types';
 
 export const AntdSchemaForm = ({
   schema,
@@ -19,10 +18,12 @@ export const AntdSchemaForm = ({
   initialValues,
   onFinish,
   onChange,
+  form,
   submitButtonProps,
+  orientation = 'vertical',
+  onReset,
 }: AntdSchemaFormProps) => {
-  const [form] = Form.useForm();
-  const fields = parseFormSchema(schema, uiSchema);
+  const fields: ParsedField[] = parseFormSchema(schema, uiSchema);
   const cols = uiSchema?.["ui:layout"]?.cols ?? 12;
   const gap = uiSchema?.["ui:layout"]?.gap ?? 16;
 
@@ -30,12 +31,40 @@ export const AntdSchemaForm = ({
     await onFinish(values);
   };
 
+  const handleChange = (values: Record<string, unknown>) => {
+    onChange?.(values);
+  };
+
+  const handleReset = () => {
+    onReset?.();
+  };
+
+  const getFieldSpan = (field: ReturnType<typeof parseFormSchema>[number]) => {
+    if (field.span) return field.span;
+
+    if (cols === 24) return 12;
+    if (cols === 12) return 12;
+    if (cols === 6) return 6;
+    if (cols === 4) return 4;
+    if (cols === 3) return 3;
+    if (cols === 2) return 2;
+    if (cols === 1) return 1;
+
+    return 12;
+  };
+
   return (
-    <Form form={form} onFinish={handleFinish}>
-      a
+    <Form
+      form={form}
+      onFinish={handleFinish}
+      layout={orientation}
+      onReset={handleReset}
+      initialValues={initialValues}
+      onValuesChange={(_, values) => handleChange(values)}
+    >
       <Row gutter={gap}>
-        {fields.map((field) => (
-          <Col span={field.span} key={field.name}>
+        {fields.map((field: ParsedField) => (
+          <Col span={getFieldSpan(field)} key={field.name}>
             <Form.Item
               label={field.label}
               name={field.name}
@@ -56,26 +85,30 @@ export const AntdSchemaForm = ({
   );
 };
 
-const renderField = (f: ReturnType<typeof parseFormSchema>[number]) => {
-  if (f.widget === 'password') return <Input.Password placeholder={f.placeholder} />;
-  if (f.widget === 'textarea') return <Input.TextArea placeholder={f.placeholder} autoSize={{ minRows: 3 }} />;
-  if (f.widget === 'select' || f.type === 'enum') {
-    <Select options={f.enumOptions} mode={f.type === 'enum' ? 'multiple' : 'tags'} placeholder={f.placeholder} />;
-  }
+const renderField = (f: ParsedField) => {
+  const className = f.customClass ? `ant-form-item-custom-class ${f.customClass}` : 'ant-form-item-custom-class';
+  const placeholder = f.placeholder ? f.placeholder : `Please enter ${f.label}`;
 
+  if (f.widget === 'password') return <Input.Password placeholder={placeholder} className={className} />;
+  if (f.widget === 'textarea') return <Input.TextArea placeholder={placeholder} autoSize={{ minRows: 3 }} className={className} />;
+  if (f.widget === 'select') return <Select options={f.options} placeholder={placeholder} className={className} />;
 
   switch (f.type) {
     case 'boolean':
-      return <Switch />;
+      return <Switch className={className} />;
     case 'number':
-      return <InputNumber placeholder={f.placeholder} />;
+      return <InputNumber placeholder={placeholder} className={className} />;
     case 'string':
-      return <Input placeholder={f.placeholder} />;
+      return <Input placeholder={placeholder} className={className} />;
     case 'array':
-      return <Input.TextArea placeholder={f.placeholder} autoSize={{ minRows: 3 }} />;
+      return <Input.TextArea placeholder={placeholder} autoSize={{ minRows: 3 }} className={className} />;
+    case 'enum':
+      return <Select options={f.enumOptions} mode={`${f.type === 'enum' ? 'multiple' : 'tags'}`} placeholder={placeholder} className={className} />;
+    case 'options':
+      return <Select options={f.options} placeholder={placeholder} className={className} />;
     default:
-      return <Input placeholder={f.placeholder} />;
+      return <Input placeholder={placeholder} className={className} />;
   }
-}
+};
 
 export type { AntdSchemaFormProps, FormSchema, UIFormSchema };

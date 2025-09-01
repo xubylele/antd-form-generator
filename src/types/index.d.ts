@@ -1,3 +1,17 @@
+import { ButtonProps, FormInstance } from 'antd';
+
+export type AntdSchemaFormProps = {
+  schema: FormSchema;
+  uiSchema?: UIFormSchema;
+  initialValues?: Record<string, unknown>;
+  onFinish: (values: Record<string, unknown>) => void;
+  onChange?: (values: Record<string, unknown>) => void;
+  submitButtonProps?: ButtonProps;
+  form?: FormInstance;
+  orientation?: 'vertical' | 'horizontal';
+  onReset?: () => void;
+};
+
 export type StringSchema = {
   type: "string";
   title?: string;
@@ -20,6 +34,12 @@ export type BooleanSchema = {
   default?: boolean;
 };
 
+export type OptionsSchema = {
+  type: "options";
+  title?: string;
+  options: { label: string, value: string }[];
+};
+
 export type EnumSchema = {
   type: "string" | "number";
   title?: string;
@@ -37,7 +57,8 @@ export type FormSchemaProperty =
   | NumberSchema
   | BooleanSchema
   | EnumSchema
-  | ArraySchema;
+  | ArraySchema
+  | OptionsSchema;
 
 export type FormSchema = {
   title?: string;
@@ -56,4 +77,5 @@ export type UIFormSchema = {
   "ui:placeholder"?: Record<string, string>;
   "ui:visibleIf"?: Record<string, Record<string, unknown>>;
   "ui:dependencies"?: Array<{ when: Record<string, unknown>; show: string[] }>;
+  "ui:customClass"?: Record<string, string>;
 };
