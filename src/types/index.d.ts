@@ -46,6 +46,13 @@ export type EnumSchema = {
   enum: (string | number)[];
 };
 
+export type EnumFormatSchema = {
+  type: "string" | "number";
+  title?: string;
+  enumOptions: { label: string, value: string }[];
+};
+
+
 export type ArraySchema = {
   type: "array";
   title?: string;

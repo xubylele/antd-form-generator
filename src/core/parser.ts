@@ -60,12 +60,12 @@ export const parseFormSchema = (schema: FormSchema, uiSchema: UIFormSchema = {})
 };
 
 const resolveType = (property: FormSchemaProperty) => {
-  if (property.type === "string") return "string";
+  if (property.type === "string" && !('enum' in property) && !('options' in property)) return "string";
   if (property.type === "number") return "number";
   if (property.type === "boolean") return "boolean";
   if (property.type === "array") return "array";
-  if ((property as EnumSchema).type === "string" || (property as EnumSchema).type === "number") return "enum";
-  if ((property as OptionsSchema).type === "options") return "options";
+  if ((property as EnumSchema).type === "string" || (property as EnumSchema).type === "number" && 'enum' in property) return "enum";
+  if ((property as OptionsSchema).type === "options" && 'options' in property) return "options";
   return "string";
 };
 

@@ -1,12 +1,12 @@
 import {
   ArraySchema,
   BooleanSchema,
-  EnumSchema,
+  EnumFormatSchema,
   FormSchema,
   FormSchemaProperty,
   NumberSchema,
   OptionsSchema,
-  StringSchema,
+  StringSchema
 } from '../types';
 
 export const buildRulesFormField = (
@@ -53,10 +53,10 @@ export const buildRulesFormField = (
     if (b.default) rules.push({ type: 'boolean', default: b.default, message: `${name} must be ${b.default}` });
   }
 
-  if ((prop as EnumSchema).type === 'string' || (prop as EnumSchema).type === 'number') {
-    const e = prop as EnumSchema;
+  if ((prop as EnumFormatSchema).type === 'string' || (prop as EnumFormatSchema).type === 'number') {
+    const e = prop as EnumFormatSchema;
 
-    if (e.enum) rules.push({ type: e.type, enum: e.enum, message: `${name} must be one of ${e.enum.join(', ')}` });
+    if (e.enumOptions) rules.push({ type: 'enum', enum: e.enumOptions, message: `${name} must be one of ${e.enumOptions.map(option => option.label).join(', ')}` });
   }
 
   if ((prop as ArraySchema).type === 'array') {

@@ -86,25 +86,33 @@ export const AntdSchemaForm = ({
 };
 
 const renderField = (f: ParsedField) => {
-  if (f.widget === 'password') return <Input.Password placeholder={f.placeholder} className={f.customClass} />;
-  if (f.widget === 'textarea') return <Input.TextArea placeholder={f.placeholder} autoSize={{ minRows: 3 }} className={f.customClass} />;
-  if (f.widget === 'select') return <Select options={f.options} placeholder={f.placeholder} className={f.customClass} />;
+  const { widget, placeholder, customClass, options, enumOptions, type } = f;
 
-  switch (f.type) {
+  if (widget === 'password') return <Input.Password placeholder={placeholder} className={customClass} />;
+  if (widget === 'textarea') return <Input.TextArea placeholder={placeholder} autoSize={{ minRows: 3 }} className={customClass} />;
+  if (widget === 'select') {
+    if (type === 'enum') {
+      return <Select options={enumOptions} mode={`${type === 'enum' ? 'multiple' : 'tags'}`} placeholder={placeholder} className={customClass} />;
+    }
+    return <Select options={options} placeholder={placeholder} className={customClass} />;
+  }
+
+
+  switch (type) {
     case 'boolean':
-      return <Switch className={f.customClass} />;
+      return <Switch className={customClass} />;
     case 'number':
-      return <InputNumber placeholder={f.placeholder} className={f.customClass} />;
+      return <InputNumber placeholder={placeholder} className={customClass} />;
     case 'string':
-      return <Input placeholder={f.placeholder} className={f.customClass} />;
+      return <Input placeholder={placeholder} className={customClass} />;
     case 'array':
-      return <Input.TextArea placeholder={f.placeholder} autoSize={{ minRows: 3 }} className={f.customClass} />;
+      return <Input.TextArea placeholder={placeholder} autoSize={{ minRows: 3 }} className={customClass} />;
     case 'enum':
-      return <Select options={f.enumOptions} mode={`${f.type === 'enum' ? 'multiple' : 'tags'}`} placeholder={f.placeholder} className={f.customClass} />;
+      return <Select options={enumOptions} mode={`${type === 'enum' ? 'multiple' : 'tags'}`} placeholder={placeholder} className={customClass} />;
     case 'options':
-      return <Select options={f.options} placeholder={f.placeholder} className={f.customClass} />;
+      return <Select options={options} placeholder={placeholder} className={customClass} />;
     default:
-      return <Input placeholder={f.placeholder} className={f.customClass} />;
+      return <Input placeholder={placeholder} className={customClass} />;
   }
 };
 
