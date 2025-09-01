@@ -86,28 +86,25 @@ export const AntdSchemaForm = ({
 };
 
 const renderField = (f: ParsedField) => {
-  const className = f.customClass ? `ant-form-item-custom-class ${f.customClass}` : 'ant-form-item-custom-class';
-  const placeholder = f.placeholder ? f.placeholder : `Please enter ${f.label}`;
-
-  if (f.widget === 'password') return <Input.Password placeholder={placeholder} className={className} />;
-  if (f.widget === 'textarea') return <Input.TextArea placeholder={placeholder} autoSize={{ minRows: 3 }} className={className} />;
-  if (f.widget === 'select') return <Select options={f.options} placeholder={placeholder} className={className} />;
+  if (f.widget === 'password') return <Input.Password placeholder={f.placeholder} className={f.customClass} />;
+  if (f.widget === 'textarea') return <Input.TextArea placeholder={f.placeholder} autoSize={{ minRows: 3 }} className={f.customClass} />;
+  if (f.widget === 'select') return <Select options={f.options} placeholder={f.placeholder} className={f.customClass} />;
 
   switch (f.type) {
     case 'boolean':
-      return <Switch className={className} />;
+      return <Switch className={f.customClass} />;
     case 'number':
-      return <InputNumber placeholder={placeholder} className={className} />;
+      return <InputNumber placeholder={f.placeholder} className={f.customClass} />;
     case 'string':
-      return <Input placeholder={placeholder} className={className} />;
+      return <Input placeholder={f.placeholder} className={f.customClass} />;
     case 'array':
-      return <Input.TextArea placeholder={placeholder} autoSize={{ minRows: 3 }} className={className} />;
+      return <Input.TextArea placeholder={f.placeholder} autoSize={{ minRows: 3 }} className={f.customClass} />;
     case 'enum':
-      return <Select options={f.enumOptions} mode={`${f.type === 'enum' ? 'multiple' : 'tags'}`} placeholder={placeholder} className={className} />;
+      return <Select options={f.enumOptions} mode={`${f.type === 'enum' ? 'multiple' : 'tags'}`} placeholder={f.placeholder} className={f.customClass} />;
     case 'options':
-      return <Select options={f.options} placeholder={placeholder} className={className} />;
+      return <Select options={f.options} placeholder={f.placeholder} className={f.customClass} />;
     default:
-      return <Input placeholder={placeholder} className={className} />;
+      return <Input placeholder={f.placeholder} className={f.customClass} />;
   }
 };
 

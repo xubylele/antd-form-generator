@@ -5,6 +5,7 @@ import {
   FormSchema,
   FormSchemaProperty,
   NumberSchema,
+  OptionsSchema,
   StringSchema,
 } from '../types';
 
@@ -33,8 +34,17 @@ export const buildRulesFormField = (
   if ((prop as NumberSchema).type === 'number') {
     const n = prop as NumberSchema;
 
-    if (n.minimum) rules.push({ type: 'number', min: n.minimum, message: `${name} must be at least ${n.minimum}` });
-    if (n.maximum) rules.push({ type: 'number', max: n.maximum, message: `${name} must be at most ${n.maximum}` });
+    if (n.minimum !== undefined && n.maximum !== undefined) {
+      rules.push({
+        type: 'number',
+        min: n.minimum,
+        max: n.maximum,
+        message: `${name} must be at least ${n.minimum} and at most ${n.maximum}`
+      });
+    } else {
+      if (n.minimum !== undefined) rules.push({ type: 'number', min: n.minimum, message: `${name} must be at least ${n.minimum}` });
+      if (n.maximum !== undefined) rules.push({ type: 'number', max: n.maximum, message: `${name} must be at most ${n.maximum}` });
+    }
   }
 
   if ((prop as BooleanSchema).type === 'boolean') {
@@ -52,7 +62,16 @@ export const buildRulesFormField = (
   if ((prop as ArraySchema).type === 'array') {
     const a = prop as ArraySchema;
 
-    if (a.items) rules.push({ type: 'array', items: a.items.map(item => buildRulesFormField(name, shcema, item)), message: `${name} must be an array` });
+    if (a.items) rules.push({ type: 'array', items: a.items, message: `${name} must be an array` });
+  }
+
+  if ((prop as OptionsSchema).type === 'options') {
+    const o = prop as OptionsSchema;
+
+    if (o.options) {
+      const values = o.options.map(option => option.value);
+      rules.push({ type: 'options', options: o.options, message: `${name} must be one of ${values.join(', ')}` });
+    }
   }
 
   return rules;

@@ -38,14 +38,14 @@ export const parseFormSchema = (schema: FormSchema, uiSchema: UIFormSchema = {})
       type: resolveType(property),
       span: clampSpan(layoutMap[name], layoutCols),
       widget: widgets[name],
-      placeholder: placeholder[name],
+      placeholder: placeholder[name] ?? `Please enter ${property.title}`,
       enumOptions: resolveEnumOptions(property),
       options: resolveOptions(property),
-      customClass: customClass[name],
+      customClass: customClass[name] ?? '',
     }
 
     if (visibleIf?.[name]) {
-      base.visibleIf = visibleIf?.[name];
+      base.visibleIf = visibleIf?.[name] ?? {};
     }
 
     const dependency = dependencies.find(d => d.show.includes(name));
@@ -76,7 +76,7 @@ const clampSpan = (span: number | undefined, cols: number) => {
 
 const resolveEnumOptions = (property: FormSchemaProperty) => {
   if ((property as EnumSchema).type === "string" || (property as EnumSchema).type === "number") {
-    return (property as EnumSchema).enum?.map(value => ({ label: value.toString(), value: value.toString() }));
+    return (property as EnumSchema).enum?.map(value => ({ label: value.toString(), value: value.toString() })) || [];
   }
 
   return [];
