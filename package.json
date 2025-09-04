@@ -1,7 +1,7 @@
 {
-  "name": "@xuby/antd-form-builder",
+  "name": "antd-form-generator",
   "version": "0.1.0",
-  "description": "Form Builder para Ant Design v5 basado en JSON Schema + UI Schema",
+  "description": "From Generator for Ant Design v5 based on JSON Schema + UI Schema",
   "type": "module",
   "main": "./dist/index.cjs",
   "module": "./dist/index.js",
