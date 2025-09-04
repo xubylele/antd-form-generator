@@ -2,7 +2,7 @@
 "antd-form-generator": minor
 ---
 
-Initial release of **antd-form-generator**.
+# Initial release of **antd-form-generator**
 
 - ✨ Added core form generator functionality based on JSON Schema + UI Schema.
 - ✅ Integrated validation and testing with Vitest and happy-dom.
