@@ -16,24 +16,18 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 20
-          cache: pnpm
-
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v4
-        with:
-          version: 10.15.1
-          run_install: false
+          cache: npm
 
       - name: Install deps
-        run: pnpm install --frozen-lockfile=false
+        run: npm ci
 
       - name: Lint
-        run: pnpm lint
+        run: npm run lint
 
       - name: Typecheck
-        run: pnpm typecheck
+        run: npm run typecheck
 
       - name: Test
         env:
           CI: true
-        run: pnpm test
+        run: npm test
