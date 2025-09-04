@@ -1,38 +1,32 @@
 ---
-name: "\U0001F41B Bug Report"
+name: "🐛 Bug Report"
 about: Report a bug or unexpected behavior
-title: ''
-labels: ''
-assignees: ''
-
+title: "[BUG] "
+labels: bug
+assignees: ""
 ---
 
-**Describe the bug**
-A clear and concise description of what the bug is.
+### 🐞 Bug summary
 
-**To Reproduce**
-Steps to reproduce the behavior:
+A clear and concise description of the bug.
+
+### 🔄 Steps to reproduce
+
 1. Go to '...'
-2. Click on '....'
-3. Scroll down to '....'
+2. Click on '...'
+3. Scroll down to '...'
 4. See error
 
-**Expected behavior**
-A clear and concise description of what you expected to happen.
+### ✅ Expected behavior
 
-**Screenshots**
-If applicable, add screenshots to help explain your problem.
+What you expected to happen.
 
-**Desktop (please complete the following information):**
- - OS: [e.g. iOS]
- - Browser [e.g. chrome, safari]
- - Version [e.g. 22]
+### 📷 Screenshots / Logs
 
-**Smartphone (please complete the following information):**
- - Device: [e.g. iPhone6]
- - OS: [e.g. iOS8.1]
- - Browser [e.g. stock browser, safari]
- - Version [e.g. 22]
+If applicable, add screenshots or console logs to help explain your problem.
 
-**Additional context**
-Add any other context about the problem here.
+### 🖥️ Environment
+
+- OS: [e.g. macOS, Windows]
+- Browser: [e.g. Chrome 120, Firefox 118]
+- Library version: [e.g. 0.1.0]
