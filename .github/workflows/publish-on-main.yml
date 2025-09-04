@@ -6,7 +6,7 @@ on:
     paths:
       - "src/**"
       - "package.json"
-      - "pnpm-lock.yaml"
+      - "package-lock.json"
       - "tsup.config.ts"
       - "tsconfig.json"
 
@@ -16,20 +16,17 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - uses: pnpm/action-setup@v4
-        with:
-          version: 9
-
       - uses: actions/setup-node@v4
         with:
           node-version: 20
           registry-url: "https://registry.npmjs.org"
+          cache: npm
 
       - name: Install
-        run: pnpm install --frozen-lockfile
+        run: npm ci
 
       - name: Build
-        run: pnpm build
+        run: npm run build
 
       - name: Skip if version already exists
         id: skip
