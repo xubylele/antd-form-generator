@@ -5,6 +5,7 @@ export type AntdSchemaFormProps = {
   uiSchema?: UIFormSchema;
   initialValues?: Record<string, unknown>;
   onFinish: (values: Record<string, unknown>) => void;
+  onFinishFailed?: (errorInfo: any) => void;
   onChange?: (values: Record<string, unknown>) => void;
   submitButtonProps?: ButtonProps;
   form?: FormInstance;
@@ -47,7 +48,7 @@ export type EnumSchema = {
 };
 
 export type EnumFormatSchema = {
-  type: "string" | "number";
+  type: "string" | "number" | "object";
   title?: string;
   enumOptions: { label: string, value: string }[];
 };

@@ -59,6 +59,11 @@ export const buildRulesFormField = (
     if (e.enumOptions) rules.push({ type: 'enum', enum: e.enumOptions, message: `${name} must be one of ${e.enumOptions.map(option => option.label).join(', ')}` });
   }
 
+  if ((prop as EnumFormatSchema).type === 'object') {
+    const e = prop as EnumFormatSchema;
+    if (e.enumOptions) rules.push({ type: 'enum', enum: e.enumOptions, message: `${name} must be one of ${e.enumOptions.map(option => option.label).join(', ')}` });
+  }
+
   if ((prop as ArraySchema).type === 'array') {
     const a = prop as ArraySchema;
 

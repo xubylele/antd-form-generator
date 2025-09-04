@@ -117,6 +117,11 @@ describe("enum rules", () => {
         name: {
           type: "string",
           enum: ["a", "b", "c"],
+          enumOptions: [
+            { label: "a", value: "a" },
+            { label: "b", value: "b" },
+            { label: "c", value: "c" }
+          ],
         } as EnumSchema
       }
     };
@@ -125,9 +130,32 @@ describe("enum rules", () => {
   });
 
   it("should add rule for numbers enum", () => {
-    const schema: FormSchema = { ...baseSchema, properties: { name: { type: "number", enum: ["1", "2", "3"] } as EnumSchema } };
+    const schema: FormSchema = {
+      ...baseSchema,
+      properties: {
+        name: {
+          type: "number",
+          enum: [1, 2, 3],
+          enumOptions: [
+            { label: "1", value: 1 },
+            { label: "2", value: 2 },
+            { label: "3", value: 3 }
+          ]
+        } as EnumSchema
+      }
+    };
     const rules = buildRulesFormField("name", schema, schema.properties.name);
-    expect(rules).toEqual([{ type: "enum", enum: [{ label: "1", value: "1" }, { label: "2", value: "2" }, { label: "3", value: "3" }], message: "name must be one of 1, 2, 3" }]);
+    expect(rules).toEqual([
+      {
+        type: "enum",
+        enum: [
+          { label: "1", value: 1 },
+          { label: "2", value: 2 },
+          { label: "3", value: 3 }
+        ],
+        message: "name must be one of 1, 2, 3"
+      }
+    ]);
   });
 });
 
