@@ -28,7 +28,7 @@
     "test:watch": "vitest watch",
     "test": "vitest run"
   },
-  "packageManager": "pnpm@10.15.0",
+  "packageManager": "pnpm@10.15.1",
   "peerDependencies": {
     "antd": ">=5",
     "react": ">=18",
@@ -63,5 +63,9 @@
     "react",
     "builder"
   ],
-  "author": "Xuby <diazxavier27@gmail.com>"
+  "author": {
+    "name": "Xavier Díaz",
+    "email": "diazxavier27@gmail.com",
+    "url": "dev.xuby.cl"
+  }
 }
