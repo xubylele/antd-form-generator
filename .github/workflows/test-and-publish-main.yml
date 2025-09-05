@@ -28,13 +28,13 @@ jobs:
       - name: Install deps
         run: npm ci
 
+      - name: Build
+        run: npm run build
+
       - name: Run tests
         env:
           CI: true
         run: npm test
-
-      - name: Build
-        run: npm run build
 
       - name: Fail if package is private
         run: |
