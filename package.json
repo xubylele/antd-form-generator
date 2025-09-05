@@ -19,16 +19,16 @@
   "sideEffects": false,
   "scripts": {
     "dev": "tsup src/index.tsx --watch --format esm,cjs --dts",
-    "prepare": "pnpm build",
+    "prepare": "npm build",
     "build": "tsup src/index.tsx --format esm,cjs --dts --sourcemap --clean",
     "typecheck": "tsc --noEmit",
     "lint": "eslint . --ext ts,tsx,js,jsx",
     "version-packages": "changeset version",
-    "release": "pnpm build && npm publish --access public",
+    "release": "npm build && npm publish --access public",
     "test:watch": "vitest watch",
     "test": "vitest run"
   },
-  "packageManager": "pnpm@10.15.1",
+  "packageManager": "npm@10.15.1",
   "peerDependencies": {
     "antd": ">=5",
     "react": ">=18",
