@@ -28,9 +28,6 @@ jobs:
       - name: Install deps
         run: npm ci
 
-      - name: Authenticate with npm
-        run: npm config set //registry.npmjs.org/:_authToken ${{ secrets.NPM_TOKEN }}
-
       - name: Build
         run: npm run build
 
@@ -78,4 +75,6 @@ jobs:
 
       - name: Publish to npm
         if: steps.skip.outputs.already == 'false'
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_SECRET }}
         run: npm publish --access public --tag ${{ steps.info.outputs.tag }}
