@@ -5,7 +5,7 @@ export type AntdSchemaFormProps = {
   uiSchema?: UIFormSchema;
   initialValues?: Record<string, unknown>;
   onFinish: (values: Record<string, unknown>) => void;
-  onFinishFailed?: (errorInfo: any) => void;
+  onFinishFailed?: (errorInfo: unknown) => void;
   onChange?: (values: Record<string, unknown>) => void;
   submitButtonProps?: ButtonProps;
   form?: FormInstance;
