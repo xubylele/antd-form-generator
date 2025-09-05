@@ -3,13 +3,7 @@ name: Test → Build → Publish (npm)
 on:
   push:
     branches: [main]
-    paths:
-      - "src/**"
-      - "package.json"
-      - "package-lock.json"
-      - "tsconfig.json"
-      - "tsup.config.ts"
-  workflow_dispatch:
+  workflow_dispatch: {}
 
 concurrency:
   group: publish-${{ github.ref }}
@@ -20,16 +14,18 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout
+        uses: actions/checkout@v4
 
-      - uses: actions/setup-node@v4
+      - name: Setup Node (npm auth enabled)
+        uses: actions/setup-node@v4
         with:
           node-version: 20
           registry-url: "https://registry.npmjs.org"
-          cache: "npm"
           always-auth: true
+          cache: "npm"
 
-      - name: Install
+      - name: Install deps
         run: npm ci
 
       - name: Run tests
@@ -61,7 +57,7 @@ jobs:
             echo "tag=latest" >> "$GITHUB_OUTPUT"
           fi
 
-      - name: Skip if version already exists
+      - name: Skip if version already exists on npm
         id: skip
         run: |
           PUBLISHED=$(npm view "${{ steps.info.outputs.name }}@${{ steps.info.outputs.version }}" version || true)
