@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import {
   ArraySchema,
   BooleanSchema,
@@ -14,7 +15,6 @@ export const buildRulesFormField = (
   shcema: FormSchema,
   prop: FormSchemaProperty,
 ) => {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const rules: any[] = [];
 
   if (shcema.required?.includes(name)) {
