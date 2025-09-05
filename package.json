@@ -1,6 +1,6 @@
 {
   "name": "@xubylele/antd-form-generator",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "From Generator for Ant Design v5 based on JSON Schema + UI Schema",
   "type": "module",
   "main": "./dist/index.cjs",
