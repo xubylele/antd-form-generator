@@ -48,11 +48,6 @@ export const parseFormSchema = (schema: FormSchema, uiSchema: UIFormSchema = {})
       base.visibleIf = visibleIf?.[name] ?? {};
     }
 
-    const dependency = dependencies.find(d => d.show.includes(name));
-    if (dependency) {
-      // TODO: Implement dependency
-    }
-
     fields.push(base);
   }
 
