@@ -28,7 +28,6 @@ export const parseFormSchema = (schema: FormSchema, uiSchema: UIFormSchema = {})
   const widgets = uiSchema['ui:widgets'] || {};
   const placeholder = uiSchema['ui:placeholder'] || {};
   const visibleIf = uiSchema['ui:visibleIf'] || {};
-  const dependencies = uiSchema['ui:dependencies'] || [];
   const customClass = uiSchema['ui:customClass'] || {};
 
   for (const [name, property] of Object.entries(schema.properties)) {

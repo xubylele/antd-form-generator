@@ -10,7 +10,6 @@ import type {
 } from "../../types";
 import { buildRulesFormField } from "../validators";
 
-
 const baseSchema: FormSchema = {
   type: "object",
   properties: {},

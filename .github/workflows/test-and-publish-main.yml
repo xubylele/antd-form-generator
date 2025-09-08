@@ -3,34 +3,46 @@ name: Test → Build → Publish (npm)
 on:
   push:
     branches: [main]
-    paths:
-      - "src/**"
-      - "package.json"
-      - "package-lock.json"
-      - "tsconfig.json"
-      - "tsup.config.ts"
+  workflow_dispatch: {}
+
+concurrency:
+  group: publish-${{ github.ref }}
+  cancel-in-progress: false
 
 jobs:
   test_build_publish:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout
+        uses: actions/checkout@v4
 
-      - uses: actions/setup-node@v4
+      - name: Setup Node (npm auth enabled)
+        uses: actions/setup-node@v4
         with:
           node-version: 20
           registry-url: "https://registry.npmjs.org"
+          always-auth: true
           cache: "npm"
 
-      - name: Install
+      - name: Install deps
         run: npm ci
-
-      - name: Run tests
-        run: npm test
 
       - name: Build
         run: npm run build
+
+      - name: Run tests
+        env:
+          CI: true
+        run: npm test
+
+      - name: Fail if package is private
+        run: |
+          PRIV=$(node -p "require('./package.json').private ? 'true' : 'false'")
+          if [ "$PRIV" = "true" ]; then
+            echo "🚫 package.json has \"private\": true. Refusing to publish."
+            exit 1
+          fi
 
       - name: Gather version info
         id: info
@@ -45,18 +57,24 @@ jobs:
             echo "tag=latest" >> "$GITHUB_OUTPUT"
           fi
 
-      - name: Skip if version already exists
+      - name: Skip if version already exists on npm
         id: skip
         run: |
           PUBLISHED=$(npm view "${{ steps.info.outputs.name }}@${{ steps.info.outputs.version }}" version || true)
           if [ "$PUBLISHED" = "${{ steps.info.outputs.version }}" ]; then
             echo "already=true" >> "$GITHUB_OUTPUT"
+            echo "ℹ️ Version already on npm: $PUBLISHED"
           else
             echo "already=false" >> "$GITHUB_OUTPUT"
           fi
 
+      - name: Ensure dist/ exists
+        if: steps.skip.outputs.already == 'false'
+        run: |
+          test -d dist || (echo "🚫 dist/ not found. Did the build step generate artifacts?" && exit 1)
+
       - name: Publish to npm
         if: steps.skip.outputs.already == 'false'
         env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_SECRET }}
         run: npm publish --access public --tag ${{ steps.info.outputs.tag }}

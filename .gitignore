@@ -110,9 +110,6 @@ test-results/
 playwright-report/
 playwright/.cache/
 
-# Package manager files
-yarn.lock
-package-lock.json
 # Keep pnpm-lock.yaml for pnpm projects
 
 # Storybook
