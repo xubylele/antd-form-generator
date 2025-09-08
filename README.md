@@ -355,7 +355,7 @@ const schema: FormSchema = {
 
 ```bash
 # Clone the repository
-git clone <repository-url>
+git clone https://github.com/xubylele/antd-form-generator.git
 cd antd-form-generator
 
 # Install dependencies
@@ -394,7 +394,7 @@ pnpm lint
 
 ## License
 
-MIT © [Xuby](https://github.com/xubylele)
+MIT © [Xuby](https://github.com/xubylele/antd-form-generator/blob/main/license)
 
 ## Support
 

@@ -1,13 +1,12 @@
-import { describe, it, expect } from "vitest";
-import { parseFormSchema, type ParsedField } from "../parser";
+import { describe, expect, it } from "vitest";
 import type {
-  FormSchema,
-  UIFormSchema,
-  EnumFormatSchema,
-  OptionsSchema,
-  FormSchemaProperty,
   EnumSchema,
+  FormSchema,
+  FormSchemaProperty,
+  OptionsSchema,
+  UIFormSchema
 } from "../../types";
+import { parseFormSchema, type ParsedField } from "../parser";
 
 const baseSchema: FormSchema = {
   title: "Base Schema",
