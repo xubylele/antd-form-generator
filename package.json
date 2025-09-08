@@ -56,6 +56,7 @@
     "vitest": "^3.2.4"
   },
   "license": "MIT",
+  "homepage": "https://www.antdformbuilder.dev",
   "keywords": [
     "ant-design",
     "forms",
@@ -70,6 +71,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/xubylele/antd-form-generator.git"
+    "url": "https://github.com/xubylele/antd-form-generator.git",
+    "homepage": "https://www.antdformbuilder.dev"
   }
 }
