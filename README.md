@@ -19,6 +19,12 @@ If you find this extension helpful, consider supporting the developer by buying 
 - 📦 **Tree Shakeable**: Optimized bundle size with tree shaking
 - 🧪 **Well Tested**: Comprehensive test coverage
 
+## Playground
+
+Try out the form generator in our interactive playground:
+
+🔗 **[Live Playground](https://www.antdformbuilder.dev)** - Experiment with different schemas and see real-time results
+
 ## Installation
 
 ```bash
